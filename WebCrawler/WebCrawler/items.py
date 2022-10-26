@@ -18,7 +18,7 @@ class ReviewsAllocineItem(Item):
 
 
 class ReviewsBoursItem(Item):
-    name = Field()
+    indice = Field()
     cours = Field()
     var = Field()
     maxVal = Field()

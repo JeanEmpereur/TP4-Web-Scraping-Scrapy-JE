@@ -24,31 +24,31 @@ class AllocineSpider(scrapy.Spider):
             try:
                 item['title'] = film.css('a.meta-title-link::text')[0].extract()
             except:
-                item['title'] = 'None'
+                item['title'] = None
 
             # Lien de l'image du film
             try:
                 item['img'] = film.css('img').attrib['src']
             except:
-                item['img'] = 'None'
+                item['img'] = None
 
             # Auteur du film
             try:
                 item['author'] = film.css('div.meta-body-direction').css('a::text')[0].extract()
             except:
-                item['author'] = 'None'
+                item['author'] = None
 
             # Durée du film
             try:
                 item['time'] = film.css('div.meta-body-info::text')[0].extract().strip()
             except:
-                item['time'] = 'None'
+                item['time'] = None
 
             # Genre cinématographique
             try:
                 item['genre'] = film.css('div.meta-body-info')[0].css('span::text').extract()[1:]
             except:
-                item['genre'] = 'None'
+                item['genre'] = None
 
             # Score du film
             try:
@@ -57,18 +57,18 @@ class AllocineSpider(scrapy.Spider):
                     test[score.css('rating-title::text').extract()] = score.css('.stareval-note::text').extract()
                 item['score'] = test
             except:
-                item['score'] = 'None'
+                item['score'] = None
 
             # Description du film
             try:
                 item['desc'] = film.css('div.synopsis').css('.content-txt::text').extract()[0]
             except:
-                item['desc'] = 'None'
+                item['desc'] = None
 
             # Date de sortie
             try:
                 item['release'] = film.css('span.date::text').extract()[0]
             except:
-                item['release'] = 'None'
+                item['release'] = None
 
             yield item
