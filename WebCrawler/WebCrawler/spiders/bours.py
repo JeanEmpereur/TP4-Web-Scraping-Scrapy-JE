@@ -2,9 +2,14 @@ import scrapy
 from scrapy import Request
 from WebCrawler.items import ReviewsBoursItem
 from datetime import datetime
+from WebCrawler.pipelines import Databases
 
 
 class BoursSpider(scrapy.Spider):
+    
+    Databases.connectDb()
+    Databases.createTable()
+
     name = 'bours'
     allowed_domains = ['finance.yahoo.com']
     start_urls =  [f'https://www.boursorama.com/bourse/actions/palmares/france/page-{n}?france_filter%5Bmarket%5D=1rPCAC' for n in range(1, 3)]
@@ -33,7 +38,7 @@ class BoursSpider(scrapy.Spider):
 
             #Variation de l'action
             try:
-                item['var'] = float(indice.css('span.c-instrument--instant-variation::text').extract()[0])
+                item['var'] = float(indice.css('span.c-instrument--instant-variation::text').extract()[0].split('%')[0])
             except:
                 item['var'] = None
 
@@ -61,4 +66,7 @@ class BoursSpider(scrapy.Spider):
             except:
                 item['date'] = None
 
+            item['page'] = int(response.url.split('page-')[1].split('?')[0])
+
+            Databases.addRowBoursorama(item)
             yield item

@@ -25,4 +25,5 @@ class ReviewsBoursItem(Item):
     minVal = Field()
     openVal = Field()
     date = Field()
+    page = Field()
 
